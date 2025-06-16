@@ -142,21 +142,21 @@ export default function PaymentsManagement() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Payments Management</h1>
-          <p className="text-gray-400 mt-1">Monitor and manage all payments and payouts</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Payments Management</h1>
+          <p className="text-gray-400 mt-1 text-sm sm:text-base">Monitor and manage all payments and payouts</p>
         </div>
-        {/* <Button onClick={handleExport} className="bg-green-600 hover:bg-green-700 text-white">
+        <Button onClick={handleExport} className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto">
           <Download className="h-4 w-4 mr-2" />
           Export Data
-        </Button> */}
+        </Button>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">Total Revenue</CardTitle>
@@ -209,19 +209,17 @@ export default function PaymentsManagement() {
       <Card className="bg-gray-900 border-gray-800">
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Search by payment ID, user, or transaction ID..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-gray-800 border-gray-700 text-white"
-                />
-              </div>
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                placeholder="Search by payment ID, user, or transaction ID..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 bg-gray-800 border-gray-700 text-white w-full"
+              />
             </div>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-[180px] bg-gray-800 border-gray-700 text-white">
+              <SelectTrigger className="w-full md:w-[180px] bg-gray-800 border-gray-700 text-white">
                 <SelectValue placeholder="Payment Type" />
               </SelectTrigger>
               <SelectContent className="bg-gray-800 border-gray-700">
@@ -232,7 +230,7 @@ export default function PaymentsManagement() {
               </SelectContent>
             </Select>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[180px] bg-gray-800 border-gray-700 text-white">
+              <SelectTrigger className="w-full md:w-[180px] bg-gray-800 border-gray-700 text-white">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent className="bg-gray-800 border-gray-700">
@@ -249,194 +247,212 @@ export default function PaymentsManagement() {
 
       {/* Payments List */}
       <div className="space-y-4">
-        {filteredPayments.map((payment) => (
-          <Card key={payment.id} className="bg-gray-900 border-gray-800 hover:border-green-500 transition-colors">
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-                    <CreditCard className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-medium text-lg">{payment.id}</h3>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <Badge variant="outline" className={getTypeColor(payment.type)}>
-                        {payment.type}
-                      </Badge>
-                      <Badge className={`${getStatusColor(payment.status)} text-white`}>{payment.status}</Badge>
+        {filteredPayments.length > 0 ? (
+          filteredPayments.map((payment) => (
+            <Card key={payment.id} className="bg-gray-900 border-gray-800 hover:border-green-500 transition-colors">
+              <CardContent className="pt-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <CreditCard className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-medium text-lg">{payment.id}</h3>
+                      <div className="flex items-center flex-wrap gap-2 mt-1">
+                        <Badge variant="outline" className={getTypeColor(payment.type)}>
+                          {payment.type}
+                        </Badge>
+                        <Badge className={`${getStatusColor(payment.status)} text-white`}>{payment.status}</Badge>
+                      </div>
                     </div>
                   </div>
+                  <div className="text-left sm:text-right w-full sm:w-auto">
+                    <p className="text-white font-bold text-xl">₹{payment.amount.toLocaleString()}</p>
+                    <p className="text-gray-400 text-sm">{payment.method}</p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-white font-bold text-xl">₹{payment.amount.toLocaleString()}</p>
-                  <p className="text-gray-400 text-sm">{payment.method}</p>
-                </div>
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div className="bg-gray-800 p-3 rounded-lg">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Users className="h-4 w-4 text-blue-400" />
-                    <span className="text-blue-400 font-medium">User Details</span>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <div className="bg-gray-800 p-3 rounded-lg">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Users className="h-4 w-4 text-blue-400" />
+                      <span className="text-blue-400 font-medium">User Details</span>
+                    </div>
+                    <p className="text-white font-medium">{payment.user}</p>
+                    <p className="text-gray-400 text-sm">{payment.userType}</p>
                   </div>
-                  <p className="text-white font-medium">{payment.user}</p>
-                  <p className="text-gray-400 text-sm">{payment.userType}</p>
-                </div>
-                <div className="bg-gray-800 p-3 rounded-lg">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Calendar className="h-4 w-4 text-green-400" />
-                    <span className="text-green-400 font-medium">Transaction</span>
+                  <div className="bg-gray-800 p-3 rounded-lg">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Calendar className="h-4 w-4 text-green-400" />
+                      <span className="text-green-400 font-medium">Transaction</span>
+                    </div>
+                    <p className="text-white text-sm break-all">{payment.transactionId}</p>
+                    <p className="text-gray-400 text-xs">{payment.date}</p>
                   </div>
-                  <p className="text-white text-sm">{payment.transactionId}</p>
-                  <p className="text-gray-400 text-xs">{payment.date}</p>
-                </div>
-                <div className="bg-gray-800 p-3 rounded-lg">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <DollarSign className="h-4 w-4 text-purple-400" />
-                    <span className="text-purple-400 font-medium">Commission</span>
+                  <div className="bg-gray-800 p-3 rounded-lg">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <DollarSign className="h-4 w-4 text-purple-400" />
+                      <span className="text-purple-400 font-medium">Commission</span>
+                    </div>
+                    <p className="text-white font-medium">₹{payment.commission}</p>
+                    <p className="text-gray-400 text-xs">
+                      {((payment.commission / payment.amount) * 100).toFixed(1)}% of total
+                    </p>
                   </div>
-                  <p className="text-white font-medium">₹{payment.commission}</p>
-                  <p className="text-gray-400 text-xs">
-                    {((payment.commission / payment.amount) * 100).toFixed(1)}% of total
-                  </p>
                 </div>
-              </div>
 
-              {/* Action Buttons */}
-              <div className="flex space-x-2">
-                <Dialog>
-                  <DialogTrigger asChild>
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-2">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-gray-700 text-gray-400 hover:bg-gray-800 w-full sm:w-auto"
+                        onClick={() => handleView(payment)}
+                      >
+                        <Eye className="h-3 w-3 mr-1" />
+                        View Details
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-gray-900 border-gray-800 text-white max-w-sm sm:max-w-xl md:max-w-2xl overflow-y-auto">
+                      <DialogHeader>
+                        <DialogTitle className="text-xl font-bold">Payment Details - {payment.id}</DialogTitle>
+                      </DialogHeader>
+                      {selectedPayment && (
+                        <Tabs defaultValue="details" className="w-full">
+                          <TabsList className="bg-gray-800 border-gray-700 grid w-full grid-cols-2">
+                            <TabsTrigger value="details" className="data-[state=active]:bg-green-600">
+                              Details
+                            </TabsTrigger>
+                            <TabsTrigger value="history" className="data-[state=active]:bg-green-600">
+                              History
+                            </TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="details" className="space-y-4 pt-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <div className="bg-gray-800 p-4 rounded-lg">
+                                <h4 className="text-white font-medium mb-2">Payment Information</h4>
+                                <div className="space-y-2 text-sm">
+                                  <div className="flex justify-between flex-wrap gap-2">
+                                    <span className="text-gray-400">Payment ID:</span>
+                                    <span className="text-white">{selectedPayment.id}</span>
+                                  </div>
+                                  <div className="flex justify-between flex-wrap gap-2">
+                                    <span className="text-gray-400">Amount:</span>
+                                    <span className="text-white">₹{selectedPayment.amount}</span>
+                                  </div>
+                                  <div className="flex justify-between flex-wrap gap-2">
+                                    <span className="text-gray-400">Method:</span>
+                                    <span className="text-white">{selectedPayment.method}</span>
+                                  </div>
+                                  <div className="flex justify-between flex-wrap gap-2">
+                                    <span className="text-gray-400">Status:</span>
+                                    <Badge className={`${getStatusColor(selectedPayment.status)} text-white`}>
+                                      {selectedPayment.status}
+                                    </Badge>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="bg-gray-800 p-4 rounded-lg">
+                                <h4 className="text-white font-medium mb-2">Transaction Details</h4>
+                                <div className="space-y-2 text-sm">
+                                  <div className="flex justify-between flex-wrap gap-2">
+                                    <span className="text-gray-400">Transaction ID:</span>
+                                    <span className="text-white break-all">{selectedPayment.transactionId}</span>
+                                  </div>
+                                  <div className="flex justify-between flex-wrap gap-2">
+                                    <span className="text-gray-400">Date:</span>
+                                    <span className="text-white">{selectedPayment.date}</span>
+                                  </div>
+                                  <div className="flex justify-between flex-wrap gap-2">
+                                    <span className="text-gray-400">Commission:</span>
+                                    <span className="text-white">₹{selectedPayment.commission}</span>
+                                  </div>
+                                  <div className="flex justify-between flex-wrap gap-2">
+                                    <span className="text-gray-400">Net Amount:</span>
+                                    <span className="text-white">
+                                      ₹{selectedPayment.amount - selectedPayment.commission}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </TabsContent>
+                          <TabsContent value="history" className="space-y-4 pt-4">
+                            <div className="bg-gray-800 p-4 rounded-lg">
+                              <h4 className="text-white font-medium mb-3">Payment Timeline</h4>
+                              <div className="space-y-3">
+                                <div className="flex items-start space-x-3">
+                                  <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0 mt-1.5"></div>
+                                  <div>
+                                    <p className="text-white text-sm">Payment initiated</p>
+                                    <p className="text-gray-400 text-xs">{selectedPayment.date}</p>
+                                  </div>
+                                </div>
+                                <div className="flex items-start space-x-3">
+                                  <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0 mt-1.5"></div>
+                                  <div>
+                                    <p className="text-white text-sm">Payment processed</p>
+                                    <p className="text-gray-400 text-xs">2 mins after initiation</p>
+                                  </div>
+                                </div>
+                                {selectedPayment.status === "Completed" && (
+                                  <div className="flex items-start space-x-3">
+                                    <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0 mt-1.5"></div>
+                                    <div>
+                                      <p className="text-white text-sm">Payment completed</p>
+                                      <p className="text-gray-400 text-xs">5 mins after initiation</p>
+                                    </div>
+                                  </div>
+                                )}
+                                {selectedPayment.status === "Failed" && (
+                                  <div className="flex items-start space-x-3">
+                                    <div className="w-2 h-2 bg-red-400 rounded-full flex-shrink-0 mt-1.5"></div>
+                                    <div>
+                                      <p className="text-white text-sm">Payment failed</p>
+                                      <p className="text-gray-400 text-xs">Reason: Insufficient funds</p>{" "}
+                                      {/* Example reason */}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </TabsContent>
+                        </Tabs>
+                      )}
+                    </DialogContent>
+                  </Dialog>
+
+                  {payment.status === "Completed" && payment.type.includes("Payment") && (
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-gray-700 text-gray-400 hover:bg-gray-800"
-                      onClick={() => handleView(payment)}
+                      onClick={() => handleRefund(payment)}
+                      className="border-red-600 text-red-400 hover:bg-red-600/10 w-full sm:w-auto"
                     >
-                      <Eye className="h-3 w-3 mr-1" />
-                      View Details
+                      <RefreshCw className="h-3 w-3 mr-1" />
+                      Refund
                     </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-gray-900 border-gray-800 text-white max-w-2xl">
-                    <DialogHeader>
-                      <DialogTitle>Payment Details - {payment.id}</DialogTitle>
-                    </DialogHeader>
-                    {selectedPayment && (
-                      <Tabs defaultValue="details" className="w-full">
-                        <TabsList className="bg-gray-800 border-gray-700">
-                          <TabsTrigger value="details" className="data-[state=active]:bg-green-600">
-                            Details
-                          </TabsTrigger>
-                          <TabsTrigger value="history" className="data-[state=active]:bg-green-600">
-                            History
-                          </TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="details" className="space-y-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-gray-800 p-4 rounded-lg">
-                              <h4 className="text-white font-medium mb-2">Payment Information</h4>
-                              <div className="space-y-2 text-sm">
-                                <div className="flex justify-between">
-                                  <span className="text-gray-400">Payment ID:</span>
-                                  <span className="text-white">{selectedPayment.id}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-400">Amount:</span>
-                                  <span className="text-white">₹{selectedPayment.amount}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-400">Method:</span>
-                                  <span className="text-white">{selectedPayment.method}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-400">Status:</span>
-                                  <Badge className={`${getStatusColor(selectedPayment.status)} text-white`}>
-                                    {selectedPayment.status}
-                                  </Badge>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="bg-gray-800 p-4 rounded-lg">
-                              <h4 className="text-white font-medium mb-2">Transaction Details</h4>
-                              <div className="space-y-2 text-sm">
-                                <div className="flex justify-between">
-                                  <span className="text-gray-400">Transaction ID:</span>
-                                  <span className="text-white">{selectedPayment.transactionId}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-400">Date:</span>
-                                  <span className="text-white">{selectedPayment.date}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-400">Commission:</span>
-                                  <span className="text-white">₹{selectedPayment.commission}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-400">Net Amount:</span>
-                                  <span className="text-white">
-                                    ₹{selectedPayment.amount - selectedPayment.commission}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </TabsContent>
-                        <TabsContent value="history" className="space-y-4">
-                          <div className="bg-gray-800 p-4 rounded-lg">
-                            <h4 className="text-white font-medium mb-3">Payment Timeline</h4>
-                            <div className="space-y-3">
-                              <div className="flex items-center space-x-3">
-                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                                <div>
-                                  <p className="text-white text-sm">Payment initiated</p>
-                                  <p className="text-gray-400 text-xs">{selectedPayment.date}</p>
-                                </div>
-                              </div>
-                              <div className="flex items-center space-x-3">
-                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                <div>
-                                  <p className="text-white text-sm">Payment processed</p>
-                                  <p className="text-gray-400 text-xs">2 mins after initiation</p>
-                                </div>
-                              </div>
-                              {selectedPayment.status === "Completed" && (
-                                <div className="flex items-center space-x-3">
-                                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                                  <div>
-                                    <p className="text-white text-sm">Payment completed</p>
-                                    <p className="text-gray-400 text-xs">5 mins after initiation</p>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </TabsContent>
-                      </Tabs>
-                    )}
-                  </DialogContent>
-                </Dialog>
+                  )}
 
-                {/* {payment.status === "Completed" && payment.type.includes("Payment") && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleRefund(payment)}
-                    className="border-red-600 text-red-400 hover:bg-red-600/10"
-                  >
-                    <RefreshCw className="h-3 w-3 mr-1" />
-                    Refund
-                  </Button>
-                )} */}
-
-                {payment.status === "Failed" && (
-                  <Button size="sm" onClick={() => handleRetry(payment)} className="bg-green-600 hover:bg-green-700">
-                    <RefreshCw className="h-3 w-3 mr-1" />
-                    Retry
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                  {payment.status === "Failed" && (
+                    <Button
+                      size="sm"
+                      onClick={() => handleRetry(payment)}
+                      className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
+                    >
+                      <RefreshCw className="h-3 w-3 mr-1" />
+                      Retry
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div className="text-center text-gray-400 py-8">No payments found matching your criteria.</div>
+        )}
       </div>
     </div>
   )

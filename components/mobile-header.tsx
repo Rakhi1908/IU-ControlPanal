@@ -17,7 +17,7 @@ export function MobileHeader() {
             </div>
             <div>
               <h1 className="text-sm font-bold text-white">IdharUdhar</h1>
-              <p className="text-xs text-gray-400">Admin Panel</p>
+              <p className="text-xs text-gray-400">Control Panel</p>
             </div>
           </div>
         </div>

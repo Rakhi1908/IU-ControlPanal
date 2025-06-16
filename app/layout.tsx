@@ -9,9 +9,8 @@ import { AuthProvider } from "@/components/auth-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "IdharUdhar - Admin Panel",
-  description: "Admin panel for IdharUdhar ride-sharing platform",
-    generator: 'v0.dev'
+  title: "IdharUdhar - Control Panel",
+  description: "Control panel for IdharUdhar ride-sharing platform",
 }
 
 export default function RootLayout({

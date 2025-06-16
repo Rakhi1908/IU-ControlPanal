@@ -64,19 +64,19 @@ export default function ReportsManagement() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Reports & Analytics</h1>
-          <p className="text-gray-400 mt-1">Comprehensive business insights and performance metrics</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Reports & Analytics</h1>
+          <p className="text-gray-400 mt-1 text-sm sm:text-base">Comprehensive business insights and performance metrics</p>
         </div>
-        <div className="flex space-x-2">
-          <Button onClick={() => handleExport("earnings")} variant="outline" className="border-gray-700 text-gray-400">
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
+          <Button onClick={() => handleExport("earnings")} variant="outline" className="border-gray-700 text-gray-400 w-full sm:w-auto">
             <Download className="h-4 w-4 mr-2" />
             Export PDF
           </Button>
-          {/* <Button onClick={() => handleExport("excel")} className="bg-green-600 hover:bg-green-700">
+          {/* <Button onClick={() => handleExport("excel")} className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
             <Download className="h-4 w-4 mr-2" />
             Export Excel
           </Button> */}
@@ -90,10 +90,10 @@ export default function ReportsManagement() {
             <DatePickerWithRange
               value={dateRange}
               onChange={setDateRange}
-              className="bg-gray-800 border-gray-700 text-white"
+              className="bg-gray-800 border-gray-700 text-white w-full md:w-auto"
             />
             <Select value={selectedDriver} onValueChange={setSelectedDriver}>
-              <SelectTrigger className="w-[200px] bg-gray-800 border-gray-700 text-white">
+              <SelectTrigger className="w-full md:w-[200px] bg-gray-800 border-gray-700 text-white">
                 <SelectValue placeholder="Select Driver" />
               </SelectTrigger>
               <SelectContent className="bg-gray-800 border-gray-700">
@@ -104,7 +104,7 @@ export default function ReportsManagement() {
               </SelectContent>
             </Select>
             <Select value={reportType} onValueChange={setReportType}>
-              <SelectTrigger className="w-[200px] bg-gray-800 border-gray-700 text-white">
+              <SelectTrigger className="w-full md:w-[200px] bg-gray-800 border-gray-700 text-white">
                 <SelectValue placeholder="Report Type" />
               </SelectTrigger>
               <SelectContent className="bg-gray-800 border-gray-700">
@@ -119,7 +119,7 @@ export default function ReportsManagement() {
       </Card>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">Total Earnings</CardTitle>
@@ -190,13 +190,13 @@ export default function ReportsManagement() {
                   color: "hsl(var(--chart-2))",
                 },
               }}
-              className="h-[300px]"
+              className="h-[250px] sm:h-[300px] w-full"
             >
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={earningsData}>
+                <LineChart data={earningsData} margin={{ left: -10, right: 10 }}> {/* Adjusted margins */}
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                  <XAxis dataKey="month" stroke="#9ca3af" />
-                  <YAxis stroke="#9ca3af" />
+                  <XAxis dataKey="month" stroke="#9ca3af" tickLine={false} axisLine={false} />
+                  <YAxis stroke="#9ca3af" tickLine={false} axisLine={false} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Line type="monotone" dataKey="earnings" stroke="var(--color-earnings)" strokeWidth={2} />
                   <Line type="monotone" dataKey="rides" stroke="var(--color-rides)" strokeWidth={2} />
@@ -219,13 +219,13 @@ export default function ReportsManagement() {
                   color: "hsl(var(--chart-1))",
                 },
               }}
-              className="h-[300px]"
+              className="h-[250px] sm:h-[300px] w-full"
             >
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={hourlyData}>
+                <BarChart data={hourlyData} margin={{ left: -10, right: 10 }}> {/* Adjusted margins */}
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                  <XAxis dataKey="hour" stroke="#9ca3af" />
-                  <YAxis stroke="#9ca3af" />
+                  <XAxis dataKey="hour" stroke="#9ca3af" tickLine={false} axisLine={false} />
+                  <YAxis stroke="#9ca3af" tickLine={false} axisLine={false} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="earnings" fill="var(--color-earnings)" />
                 </BarChart>
@@ -240,7 +240,7 @@ export default function ReportsManagement() {
             <CardTitle className="text-white">Service Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px]">
+            <div className="h-[250px] sm:h-[300px] w-full flex items-center justify-center"> {/* Added flex for centering */}
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -250,6 +250,7 @@ export default function ReportsManagement() {
                     outerRadius={80}
                     dataKey="value"
                     label={({ name, value }) => `${name}: ${value}%`}
+                    className="text-white" // Apply text color for labels
                   >
                     {serviceData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -269,46 +270,48 @@ export default function ReportsManagement() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-400">Driver Efficiency</span>
-                <div className="flex items-center space-x-2">
-                  <div className="w-32 bg-gray-700 rounded-full h-2">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <span className="text-gray-400 text-sm">Driver Efficiency</span>
+                <div className="flex items-center space-x-2 w-full sm:w-auto">
+                  <div className="flex-grow bg-gray-700 rounded-full h-2">
                     <div className="bg-green-600 h-2 rounded-full" style={{ width: "85%" }}></div>
                   </div>
-                  <span className="text-white">85%</span>
+                  <span className="text-white text-sm">85%</span>
                 </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-400">Customer Satisfaction</span>
-                <div className="flex items-center space-x-2">
-                  <div className="w-32 bg-gray-700 rounded-full h-2">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <span className="text-gray-400 text-sm">Customer Satisfaction</span>
+                <div className="flex items-center space-x-2 w-full sm:w-auto">
+                  <div className="flex-grow bg-gray-700 rounded-full h-2">
                     <div className="bg-green-600 h-2 rounded-full" style={{ width: "92%" }}></div>
                   </div>
-                  <span className="text-white">92%</span>
+                  <span className="text-white text-sm">92%</span>
                 </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-400">On-time Delivery</span>
-                <div className="flex items-center space-x-2">
-                  <div className="w-32 bg-gray-700 rounded-full h-2">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <span className="text-gray-400 text-sm">On-time Delivery</span>
+                <div className="flex items-center space-x-2 w-full sm:w-auto">
+                  <div className="flex-grow bg-gray-700 rounded-full h-2">
                     <div className="bg-green-600 h-2 rounded-full" style={{ width: "88%" }}></div>
                   </div>
-                  <span className="text-white">88%</span>
+                  <span className="text-white text-sm">88%</span>
                 </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-400">Revenue Growth</span>
-                <div className="flex items-center space-x-2">
-                  <div className="w-32 bg-gray-700 rounded-full h-2">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <span className="text-gray-400 text-sm">Revenue Growth</span>
+                <div className="flex items-center space-x-2 w-full sm:w-auto">
+                  <div className="flex-grow bg-gray-700 rounded-full h-2">
                     <div className="bg-green-600 h-2 rounded-full" style={{ width: "76%" }}></div>
                   </div>
-                  <span className="text-white">76%</span>
+                  <span className="text-white text-sm">76%</span>
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      ---
 
       {/* Detailed Reports Table */}
       <Card className="bg-gray-900 border-gray-800">
@@ -320,37 +323,37 @@ export default function ReportsManagement() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-700">
-                  <th className="text-left text-gray-400 pb-2">Date</th>
-                  <th className="text-left text-gray-400 pb-2">Service</th>
-                  <th className="text-left text-gray-400 pb-2">Rides</th>
-                  <th className="text-left text-gray-400 pb-2">Earnings</th>
-                  <th className="text-left text-gray-400 pb-2">Commission</th>
+                  <th className="text-left text-gray-400 pb-2 pr-2">Date</th>
+                  <th className="text-left text-gray-400 pb-2 pr-2">Service</th>
+                  <th className="text-left text-gray-400 pb-2 pr-2">Rides</th>
+                  <th className="text-left text-gray-400 pb-2 pr-2">Earnings</th>
+                  <th className="text-left text-gray-400 pb-2 pr-2">Commission</th>
                   <th className="text-left text-gray-400 pb-2">Growth</th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="border-b border-gray-800">
-                  <td className="py-2 text-white">2024-01-15</td>
-                  <td className="py-2 text-white">Ride</td>
-                  <td className="py-2 text-white">145</td>
-                  <td className="py-2 text-white">₹12,450</td>
-                  <td className="py-2 text-white">₹1,245</td>
+                  <td className="py-2 text-white pr-2">2024-01-15</td>
+                  <td className="py-2 text-white pr-2">Ride</td>
+                  <td className="py-2 text-white pr-2">145</td>
+                  <td className="py-2 text-white pr-2">₹12,450</td>
+                  <td className="py-2 text-white pr-2">₹1,245</td>
                   <td className="py-2 text-green-400">+8.2%</td>
                 </tr>
                 <tr className="border-b border-gray-800">
-                  <td className="py-2 text-white">2024-01-15</td>
-                  <td className="py-2 text-white">Food</td>
-                  <td className="py-2 text-white">89</td>
-                  <td className="py-2 text-white">₹8,900</td>
-                  <td className="py-2 text-white">₹890</td>
+                  <td className="py-2 text-white pr-2">2024-01-15</td>
+                  <td className="py-2 text-white pr-2">Food</td>
+                  <td className="py-2 text-white pr-2">89</td>
+                  <td className="py-2 text-white pr-2">₹8,900</td>
+                  <td className="py-2 text-white pr-2">₹890</td>
                   <td className="py-2 text-green-400">+12.5%</td>
                 </tr>
                 <tr className="border-b border-gray-800">
-                  <td className="py-2 text-white">2024-01-15</td>
-                  <td className="py-2 text-white">Courier</td>
-                  <td className="py-2 text-white">34</td>
-                  <td className="py-2 text-white">₹3,400</td>
-                  <td className="py-2 text-white">₹340</td>
+                  <td className="py-2 text-white pr-2">2024-01-15</td>
+                  <td className="py-2 text-white pr-2">Courier</td>
+                  <td className="py-2 text-white pr-2">34</td>
+                  <td className="py-2 text-white pr-2">₹3,400</td>
+                  <td className="py-2 text-white pr-2">₹340</td>
                   <td className="py-2 text-red-400">-2.1%</td>
                 </tr>
               </tbody>

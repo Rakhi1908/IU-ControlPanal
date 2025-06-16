@@ -60,7 +60,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
             <FaGlobe className="brand-icon" />
             <div className="brand-text">
               <h2>IdharUdhar</h2>
-              <p>Admin Panel</p>
+              <p>Control Panel</p>
             </div>
           </div>
           <button className="sidebar-toggle" onClick={onToggle}>

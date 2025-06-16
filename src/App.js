@@ -27,7 +27,7 @@ function AppContent() {
     return (
       <div className="loading-screen">
         <div className="loading-spinner"></div>
-        <p>Loading IdharUdhar Admin Panel...</p>
+        <p>Loading IdharUdhar Control Panel...</p>
       </div>
     )
   }

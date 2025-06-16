@@ -149,21 +149,22 @@ export default function SupportManagement() {
   }
 
   return (
-    <div className="space-y-6">
+    // Main container padding adjusted for all screens
+    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-white">Support Management</h1>
-          <p className="text-gray-400 mt-1">Manage customer support tickets and communications</p>
+      {/* Flex direction for header items, gap, and text alignment for smaller screens */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="text-center sm:text-left">
+          {/* Font sizes adjusted for responsiveness */}
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Support Management</h1>
+          <p className="text-gray-400 mt-1 text-sm sm:text-base">Manage customer support tickets and communications</p>
         </div>
-        {/* <Button className="bg-green-600 hover:bg-green-700 text-white">
-          <MessageSquare className="h-4 w-4 mr-2" />
-          New Ticket
-        </Button> */}
+        {/* Button removed as per original comment, but if added back, ensure it's responsive */}
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      {/* Grid columns adjusted for different screen sizes */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">Total Tickets</CardTitle>
@@ -212,9 +213,10 @@ export default function SupportManagement() {
       {/* Filters */}
       <Card className="bg-gray-900 border-gray-800">
         <CardContent className="pt-6">
-          <div className="flex flex-col md:flex-row gap-4">
+          {/* Flex column on mobile, row on desktop. Widths are full on mobile, fixed on desktop */}
+          <div className="flex flex-col sm:flex-row gap-4">
             <Select value={filterStatus} onValueChange={setFilterStatus}>
-              <SelectTrigger className="w-[180px] bg-gray-800 border-gray-700 text-white">
+              <SelectTrigger className="w-full sm:w-[180px] bg-gray-800 border-gray-700 text-white">
                 <SelectValue placeholder="Filter by Status" />
               </SelectTrigger>
               <SelectContent className="bg-gray-800 border-gray-700">
@@ -226,7 +228,7 @@ export default function SupportManagement() {
               </SelectContent>
             </Select>
             <Select value={filterPriority} onValueChange={setFilterPriority}>
-              <SelectTrigger className="w-[180px] bg-gray-800 border-gray-700 text-white">
+              <SelectTrigger className="w-full sm:w-[180px] bg-gray-800 border-gray-700 text-white">
                 <SelectValue placeholder="Filter by Priority" />
               </SelectTrigger>
               <SelectContent className="bg-gray-800 border-gray-700">
@@ -240,9 +242,11 @@ export default function SupportManagement() {
         </CardContent>
       </Card>
 
-      {/* Support Tickets */}
+      {/* Support Tickets - Main Layout */}
+      {/* Grid columns adjusted for different screen sizes, stacking on small screens */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Tickets List */}
+        {/* Full width on smaller screens, 2/3 width on large screens */}
         <div className="lg:col-span-2">
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
@@ -253,35 +257,34 @@ export default function SupportManagement() {
                 {filteredTickets.map((ticket) => (
                   <div
                     key={ticket.id}
-                    className={`p-4 bg-gray-800 rounded-lg border-2 cursor-pointer transition-colors ${
-                      selectedTicket?.id === ticket.id ? "border-green-500" : "border-transparent hover:border-gray-700"
-                    }`}
+                    className={`p-4 bg-gray-800 rounded-lg border-2 cursor-pointer transition-colors
+                        flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3
+                        ${ selectedTicket?.id === ticket.id ? "border-green-500" : "border-transparent hover:border-gray-700" }`}
                     onClick={() => setSelectedTicket(ticket)}
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h3 className="text-white font-medium">{ticket.subject}</h3>
-                        <div className="flex items-center space-x-2 mt-1">
-                          <Badge variant="outline" className="border-blue-500 text-blue-400">
-                            {ticket.id}
-                          </Badge>
-                          <Badge className={`${getStatusColor(ticket.status)} text-white`}>{ticket.status}</Badge>
-                          <span className={`text-sm ${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-gray-400 text-sm">{ticket.createdAt}</p>
-                        <p className="text-gray-500 text-xs">Updated: {ticket.lastUpdate}</p>
+                    <div className="w-full sm:w-auto"> {/* Adjusted width for small screens */}
+                      <h3 className="text-white font-medium text-lg">{ticket.subject}</h3> {/* Larger text for subject */}
+                      <div className="flex flex-wrap items-center gap-2 mt-1"> {/* Flex wrap for badges on small screens */}
+                        <Badge variant="outline" className="border-blue-500 text-blue-400">
+                          {ticket.id}
+                        </Badge>
+                        <Badge className={`${getStatusColor(ticket.status)} text-white`}>{ticket.status}</Badge>
+                        <span className={`text-sm ${getPriorityColor(ticket.priority)}`}>{ticket.priority}</span>
                       </div>
                     </div>
+                    <div className="text-left sm:text-right w-full sm:w-auto"> {/* Text alignment adjusted */}
+                      <p className="text-gray-400 text-sm">{ticket.createdAt}</p>
+                      <p className="text-gray-500 text-xs">Updated: {ticket.lastUpdate}</p>
+                    </div>
 
-                    <div className="flex items-center justify-between">
+                    {/* User and Assignment info - stack on mobile, row on bigger screens */}
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full mt-2 sm:mt-0">
                       <div className="flex items-center space-x-2">
                         <User className="h-4 w-4 text-gray-400" />
                         <span className="text-white">{ticket.user}</span>
                         <span className="text-gray-400 text-sm">({ticket.userType})</span>
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-2 sm:ml-auto mt-2 sm:mt-0"> {/* Margin-left auto to push to right */}
                         <span className="text-gray-400 text-sm">Assigned to:</span>
                         <span className="text-white text-sm">{ticket.assignedTo}</span>
                       </div>
@@ -294,6 +297,7 @@ export default function SupportManagement() {
         </div>
 
         {/* Ticket Details */}
+        {/* Full width on smaller screens, 1/3 width on large screens */}
         <div className="lg:col-span-1">
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
@@ -304,7 +308,7 @@ export default function SupportManagement() {
             <CardContent>
               {selectedTicket ? (
                 <Tabs defaultValue="details" className="w-full">
-                  <TabsList className="bg-gray-800 border-gray-700">
+                  <TabsList className="bg-gray-800 border-gray-700 grid w-full grid-cols-2"> {/* Tabs list responsive grid */}
                     <TabsTrigger value="details" className="data-[state=active]:bg-green-600">
                       Details
                     </TabsTrigger>
@@ -312,21 +316,21 @@ export default function SupportManagement() {
                       Messages
                     </TabsTrigger>
                   </TabsList>
-                  <TabsContent value="details" className="space-y-4">
+                  <TabsContent value="details" className="space-y-4 mt-4"> {/* Added mt-4 for spacing */}
                     <div className="bg-gray-800 p-3 rounded-lg">
                       <h4 className="text-white font-medium mb-2">Ticket Information</h4>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span className="text-gray-400">Subject:</span>
-                          <span className="text-white">{selectedTicket.subject}</span>
+                          <span className="text-white text-right">{selectedTicket.subject}</span> {/* text-right for alignment */}
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-400">Category:</span>
-                          <span className="text-white">{selectedTicket.category}</span>
+                          <span className="text-white text-right">{selectedTicket.category}</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-400">Priority:</span>
-                          <span className={getPriorityColor(selectedTicket.priority)}>{selectedTicket.priority}</span>
+                          <span className={`${getPriorityColor(selectedTicket.priority)} text-right`}>{selectedTicket.priority}</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-400">Status:</span>
@@ -356,12 +360,12 @@ export default function SupportManagement() {
                     </div>
 
                     <div>
-                      <label className="text-sm text-gray-400">Change Status</label>
+                      <label className="text-sm text-gray-400 mb-1 block">Change Status</label> {/* Added block for spacing */}
                       <Select
                         value={selectedTicket.status}
                         onValueChange={(value) => handleStatusChange(selectedTicket, value)}
                       >
-                        <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
+                        <SelectTrigger className="w-full bg-gray-800 border-gray-700 text-white"> {/* w-full for full responsiveness */}
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-gray-800 border-gray-700">
@@ -373,7 +377,7 @@ export default function SupportManagement() {
                       </Select>
                     </div>
                   </TabsContent>
-                  <TabsContent value="messages" className="space-y-4">
+                  <TabsContent value="messages" className="space-y-4 mt-4"> {/* Added mt-4 for spacing */}
                     <div className="bg-gray-800 p-3 rounded-lg max-h-64 overflow-y-auto">
                       <div className="space-y-3">
                         {selectedTicket.messages.map((message: any, index: number) => (
@@ -400,7 +404,7 @@ export default function SupportManagement() {
                         placeholder="Type your message..."
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
-                        className="bg-gray-800 border-gray-700 text-white"
+                        className="bg-gray-800 border-gray-700 text-white w-full" /* Ensure textarea is full width */
                         rows={3}
                       />
                       <Button onClick={handleSendMessage} className="w-full bg-green-600 hover:bg-green-700">
