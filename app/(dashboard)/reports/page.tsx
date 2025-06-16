@@ -126,7 +126,7 @@ export default function ReportsManagement() {
             <DollarSign className="h-4 w-4 text-green-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">₹{reportStats.totalEarnings.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-white">₹{reportStats.totalEarnings.toLocaleString('en-IN')}</div>
             <div className="flex items-center text-xs text-green-400">
               <TrendingUp className="h-3 w-3 mr-1" />
               +18.2% from last period
